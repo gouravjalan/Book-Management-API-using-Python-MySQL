@@ -1,0 +1,3 @@
+The command used to test if api is running or not :
+
+uvicorn main:app --reload
