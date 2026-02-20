@@ -19,10 +19,11 @@
 #         from_attributes = True
 
 
-
-
 from sqlalchemy import Column, Integer, String, Float
 from database import Base
+from sqlalchemy import Date, ForeignKey
+from sqlalchemy.orm import relationship
+
 
 class Book(Base):
     __tablename__ = "book_table"
@@ -33,3 +34,15 @@ class Book(Base):
     category_id = Column(Integer)
     price = Column(Float)
     published_year = Column(Integer)
+
+class User(Base):
+    __tablename__ = "user_table"
+
+    user_id = Column(Integer, primary_key=True, index=True)
+    role = Column(String(50), nullable=False)
+    issue_date = Column(Date, nullable=False)
+    renew_date = Column(Date, nullable=False)
+    book_id = Column(Integer, ForeignKey("book_table.id"))
+    username = Column(String(100),unique=True,index=True)
+    password = Column(String(255))
+    book = relationship("Book")

@@ -10,6 +10,15 @@ CREATE TABLE IF NOT EXISTS book_table (
     price DECIMAL(10,2)
 );
 
+CREATE TABLE IF NOT EXISTS user_table (
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    role VARCHAR(50) NOT NULL,
+    issue_date DATE NOT NULL,
+    renew_date DATE NOT NULL,
+    book_id INT,
+    FOREIGN KEY (book_id) REFERENCES book_table(id)
+);
+
 INSERT INTO book_table(id,title,author_id,category_id,published_year,price) VALUES 
 (1,'The Alchemist',020,12345,1988,300);
 
@@ -24,6 +33,8 @@ INSERT INTO book_table(id,title,author_id,category_id,published_year,price) VALU
 (9,'2 States',028,55555,2014,145.00),
 (10,'12 Years',029,6666,2025,251.00);
 
+INSERT INTO book_table(id,title,author_id,category_id,published_year,price) VALUES (99,'Build Dont Talk',030,1987,2022,400.00);
+
 ALTER TABLE book_table MODIFY price FLOAT;
 
 UPDATE book_table SET author_id = author_id + 0;
@@ -35,6 +46,29 @@ ALTER TABLE book_table ADD CONSTRAINT unique_book UNIQUE (title, author_id);
 
 DELETE FROM book_table WHERE id IN (11,12,13,14);
 
-SELECT * FROM book_table;
+ALTER TABLE user_table ADD COLUMN username VARCHAR(100);
+ALTER TABLE user_table ADD COLUMN password VARCHAR(255) NOT NULL;
+ALTER TABLE user_table MODIFY role VARCHAR(50) NOT NULL;
 
+UPDATE user_table SET username = CONCAT('user', 6);
+UPDATE user_table SET username = CONCAT('user', 7);
+UPDATE user_table SET username = CONCAT('admin', 8);
+ROLLBACK;
+
+
+ALTER TABLE user_table
+MODIFY issue_date DATE NULL;
+
+ALTER TABLE user_table
+MODIFY renew_date DATE NULL;
+
+insert into user_table(user_id,role,issue_date,renew_date,book_id,username,password) VALUES (5,'admin','2026-02-19','2026-02-25',10,'GouravJ','admin2345');
+delete from user_table where user_id=7;
+delete from user_table where user_id=5;
+
+SELECT * FROM book_table;
+SELECT * FROM user_table;
+SELECT user_id, role FROM user_table WHERE user_id = 3;
+
+SELECT DATABASE();
 
